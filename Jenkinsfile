@@ -36,6 +36,8 @@ pipeline {
                     test -f build/$BUILD_FILE_NAME
                     echo $?
                     npm test a
+                    echo $?
+                    ls -la
                 '''
             }
         }
