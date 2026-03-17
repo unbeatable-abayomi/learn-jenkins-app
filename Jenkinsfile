@@ -34,12 +34,15 @@ pipeline {
                 sh '''
                     echo 'Testing Application Build'
                     test -f build/$BUILD_FILE_NAME
-                    echo $?
-                    npm test a
-                    echo $?
+                    npm test
                     ls -la
                 '''
             }
+        }
+    }
+    post{
+        always{
+            junit 'test-results/junit.xml'
         }
     }
 }
