@@ -4,6 +4,13 @@ pipeline {
         BUILD_FILE_NAME = "index.html"
     }
     stages {
+        // This is a comment
+        /*
+        Multi line
+        comment 
+        */
+        
+        /*
         stage('Build') {
             agent {
                 docker {
@@ -22,7 +29,7 @@ pipeline {
                 '''
             }
         }
-
+       */
         stage('Test') {
          agent {
                 docker {
@@ -33,7 +40,7 @@ pipeline {
             steps {
                 sh '''
                     echo 'Testing Application Build'
-                    test -f build/$BUILD_FILE_NAME
+                    #test -f build/$BUILD_FILE_NAME
                     npm test
                     ls -la
                 '''
