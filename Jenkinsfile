@@ -16,6 +16,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -43,6 +44,25 @@ pipeline {
                     echo 'Testing Application Build'
                     test -f build/$BUILD_FILE_NAME
                     npm test
+                    ls -la
+                '''
+            }
+        }
+
+        stage('E2E') {
+         agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+         }
+            steps {
+                sh '''
+                    echo 'Starting E2E test'
+                    npm install -g serve
+                    serve -s build
+                    npx playwright test
                     ls -la
                 '''
             }
