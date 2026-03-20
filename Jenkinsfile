@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh '''
                     echo 'Testing Application Build'
-                    #test -f build/$BUILD_FILE_NAME
+                    test -f build/$BUILD_FILE_NAME
                     npm test
                     ls -la
                 '''
