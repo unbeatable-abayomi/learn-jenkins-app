@@ -62,7 +62,7 @@ pipeline {
                             docker {
                                 image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                                 reuseNode true
-                                args '-v /var/run/docker.sock:/var/run/docker.sock -u root:root'
+                                args '-v /var/run/docker.sock:/var/run/docker.sock'
 
                             }
                     }
