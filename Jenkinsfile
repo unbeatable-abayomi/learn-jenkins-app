@@ -4,7 +4,7 @@ pipeline {
         BUILD_FILE_NAME = "index.html"
         NETLIFY_SITE_ID = "04957f5c-d92a-4b03-8590-4fc9812eaf0d"
         NETLIFY_AUTH_TOKEN = credentials('netlify-token') 
-        CI_ENVIRONMENT_URL = 'https://delightful-nougat-e49db8.netlify.app/'
+        
     }
     stages {
         // This is a comment
@@ -73,9 +73,8 @@ pipeline {
                             sh '''
                                 echo 'Starting E2E test'
                                 npm install serve
-                                node_modules/.bin/serve -s build -l 3000 &
+                                node_modules/.bin/serve -s build &
                                 sleep 10
-                                curl -I http://localhost:3000
                                 npx playwright test --reporter=html
                                 ls -la
                             '''
