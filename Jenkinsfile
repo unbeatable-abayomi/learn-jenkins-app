@@ -4,6 +4,7 @@ pipeline {
         BUILD_FILE_NAME = "index.html"
         NETLIFY_SITE_ID = "04957f5c-d92a-4b03-8590-4fc9812eaf0d"
         NETLIFY_AUTH_TOKEN = credentials('netlify-token') 
+        CI_ENVIRONMENT_URL = 'https://delightful-nougat-e49db8.netlify.app/'
     }
     stages {
         // This is a comment
@@ -109,6 +110,36 @@ pipeline {
                 '''
             }
         }
+
+                stage('Prod E2E') {
+            agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        reuseNode true
+                        args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+
+                    }
+            }
+     environment{
+                BUILD_FILE_NAME = "index.html"
+                CI_ENVIRONMENT_URL = 'https://delightful-nougat-e49db8.netlify.app'
+            }
+                steps {
+                    sh '''
+                        npx playwright test --reporter=html
+                        ls -la
+                    '''
+            }
+post{
+    always{
+        
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E Prod', reportTitles: '', useWrapperFileDirectly: true])
+    }
+}
+
+            
+        }
+
 
     }
 
